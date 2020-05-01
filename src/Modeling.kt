@@ -8,8 +8,8 @@ fun InitModel(v: String): Signal{
     if (v == "v1"){
             val time = JTextField("00:00:00")
             val date = JTextField("01-01-2020")
-            val N0 = JTextField("24:10:10")
-            var samplenumber_ = JTextField("1000")
+            val N0 = JTextField("02:10:10")
+            var samplenumber_ = JTextField("10000")
             val inputs = arrayOf<JComponent>(JLabel("start date :"), date, JLabel("start time :"), time, JLabel("N (0)"), N0, JLabel("Кол-во элементов"), samplenumber_)
             val result =
                 JOptionPane.showConfirmDialog(null, inputs, "Взодные параметры", JOptionPane.PLAIN_MESSAGE)

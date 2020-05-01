@@ -128,7 +128,7 @@ class SuperChannel(sgn_: Signal, channelNum_: Int, wight_: Float, hight_: Float,
                 for (i in start..finish - 1) {
                     //arrDot.sort(i, candleFilling + i - 1)
                     if (x <= wight) {
-                        g.drawOval(x1, arrDot[i].toInt(), 1, 1)
+                        g.drawOval(x1, arrDot[i].toInt(), 1, 4)
                         if (i > 0){g.drawLine(x1, arrDot[i].toInt(), x1-stepX.toInt(), arrDot[i-1].toInt())}
                     } else {
                         println("график вылез за границу")
