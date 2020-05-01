@@ -191,6 +191,7 @@ class TestMDI : JFrame() {
     init {   // Создадим меню приложения
         /**тут описываю окно моделирования */
         lateinit var modelWind: ItemWindow
+        var heightOscillogrammGraph = 200
 
         fun CreateModelWindow(v: String) {
             var modelContents = JPanel(VerticalLayout())
@@ -277,7 +278,7 @@ class TestMDI : JFrame() {
 
             }
             var refreshBut: JButton = JButton("Обновить графики")
-            refreshBut.addActionListener({ createOscilogram() })
+            refreshBut.addActionListener{ createOscilogram() }
             oscillogramContents.add(refreshBut)
 
             var scBar: JScrollBar = JScrollBar()
@@ -294,15 +295,15 @@ class TestMDI : JFrame() {
             for (i in 0..oscillogramList.size - 1) {
 
                 println(oscillogramList[i].channelNum)
-                oscillogramList[i].hight = 200f
-                oscillogramList[i].wight = 600f
+                oscillogramList[i].hight = heightOscillogrammGraph.toFloat()
+                //oscillogramList[i].wight = 600f
                 //oscillogramList[i].ChangeDot(0, oscillogramList[i].arrDot.size - 1)
-                oscillogramList[i].start = 0
-                oscillogramList[i].finish = oscillogramList[i].sgn.samplesnumber
+                oscillogramList[i].start = oscillogramList[0].start
+                oscillogramList[i].finish = oscillogramList[0].finish
 
                 /**Canvas and add comp  */
                 //oscillogramList[i].canv.preferredSize = Dimension(600, 200)
-                oscillogramList[i].canv.preferredSize = Dimension(oscilogramWind.width, 220)
+                oscillogramList[i].canv.preferredSize = Dimension(oscilogramWind.width, heightOscillogrammGraph + 20)
                 oscillogramList[i].wight = (oscilogramWind.width).toFloat()
                 //var oscilloCanvas: Canvas = oscillogramList[i].canv
                 oscillogramList[i].canv.addMouseListener(PopClickListener(oscillogramList[i]))
@@ -337,7 +338,8 @@ class TestMDI : JFrame() {
                 }
             }
             scBar.addAdjustmentListener(winListener)
-            scBar.isVisible = false
+            if ((oscillogramList[0].start == 0) or (oscillogramList[0].finish == oscillogramList[0].sgn.samplesnumber-1))
+                scBar.isVisible = false
 
             /**Button  */
 //            var changeBut: JButton = JButton("Изменить")
@@ -365,6 +367,7 @@ class TestMDI : JFrame() {
                 if (oscillogramList[0].LocalMaxMin == false) {
                     checkLocal.isSelected = false
                 }
+                var heighGr = JTextField(heightOscillogrammGraph.toString())
                 val inputs = arrayOf<JComponent>(
                     JLabel("От"),
                     first,
@@ -375,7 +378,9 @@ class TestMDI : JFrame() {
                     JLabel("Локальные Max/Min"),
                     checkLocal,
                     JLabel("Масштабирование ЛКМ"),
-                    checkPaint
+                    checkPaint,
+                    JLabel("Высота графиков (менять отдельно))"),
+                    heighGr
                 )
                 val result =
                     JOptionPane.showConfirmDialog(null, inputs, "Параметры", JOptionPane.PLAIN_MESSAGE)
@@ -383,6 +388,7 @@ class TestMDI : JFrame() {
                     //oscillogramList[i].ChangeDot(first.text.toInt(), last.text.toInt())
                     //oscillogramList[i].canv.repaint()
                     //oscillogramList[i].canv.paint(oscillogramList[i].canv.graphics)
+                    heightOscillogrammGraph = heighGr.text.toInt()
                     scbParamArray[0] = (last.text.toInt() - first.text.toInt()) / 2
                     scbParamArray[1] = oscillogramList[0].arrDot.size - 1 - scbParamArray[0]
                     scbParamArray[2] = last.text.toInt() - (last.text.toInt() - first.text.toInt()) / 2
@@ -403,7 +409,7 @@ class TestMDI : JFrame() {
                         }
                         if (oscillogramList[i].isPaint == false) {
                             if (oscillogramList[i].canv.mouseListeners.size-1 == 1)
-                            oscillogramList[i].canv.mouseListeners[oscillogramList[i].canv.mouseListeners.size-1] = PopClickListener(oscillogramList[i])
+                                oscillogramList[i].canv.mouseListeners[oscillogramList[i].canv.mouseListeners.size-1] = PopClickListener(oscillogramList[i])
                             //oscillogramList[i].canv.addMouseMotionListener(ml)
                             //oscillogramList[i].canv.addMouseListener(PopClickListener(oscillogramList[i]))
                         }
@@ -491,7 +497,8 @@ class TestMDI : JFrame() {
             val channelFile = LoadChannal()
             var sgn: Signal = FileToSignal(channelFile)
             var internalFrame = ItemWindow("Сигналы", true, true, false, false)
-            internalFrame.setBounds(25, 25, 200, 700) //width = 200
+            var hihiHeight = sgn.channels * 110
+            internalFrame.setBounds(25, 25, 200, hihiHeight) //width = 200
             internalFrame.addInternalFrameListener(MDIInternalFrameListener())
             internalFrame.addComponentListener(MDIResizeListener())
 
@@ -522,8 +529,8 @@ class TestMDI : JFrame() {
                             }
                         }
                         else{
-                                oscillogramList.add(SuperChannel(channel.sgn, channel.channelNum, 600f, 200f, channel.start, channel.finish, true)) // надо потом поменять константные параметры константа - размер канваса
-                            }
+                            oscillogramList.add(SuperChannel(channel.sgn, channel.channelNum, 600f, 200f, channel.start, channel.finish, true)) // надо потом поменять константные параметры константа - размер канваса
+                        }
                         createOscilogram()
                     }
                     add(oscillogramItem)

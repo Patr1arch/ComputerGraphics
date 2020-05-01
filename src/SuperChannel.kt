@@ -25,9 +25,12 @@ class SuperChannel(sgn_: Signal, channelNum_: Int, wight_: Float, hight_: Float,
     var isPaintApproach = true
     var LocalMaxMin = false
 
+    var isSmallVision = false
+
     var isPaint = false
     var PaintStart = 0
     var PaintFinish = 0
+
 
     fun ChangePainDot(){
         if ( PaintStart > PaintFinish){
@@ -43,9 +46,13 @@ class SuperChannel(sgn_: Signal, channelNum_: Int, wight_: Float, hight_: Float,
 
 
 
-
-
     fun ChangeDot(){
+
+        if((finish - start) < wight){
+            println("ЗАДАННА СУПЕР МАЛЕНЬКАЯ ОБЛАСТЬ")
+            isSmallVision = true
+        }
+        else{isSmallVision = false}
 
         var zero = 0
         var length = arrDot.size-1
@@ -105,13 +112,29 @@ class SuperChannel(sgn_: Signal, channelNum_: Int, wight_: Float, hight_: Float,
 
 
             if (candleFilling == 0) candleFilling = 1
-            for (i in start..finish-candleFilling step candleFilling) {
-                arrDot.sort(i, candleFilling + i - 1)
-                if (x <= wight) {
-                    g.drawLine(x1, arrDot[i].toInt(), x1, arrDot[candleFilling + i - 1].toInt())
+            if (isSmallVision == false) {
+                for (i in start..finish - candleFilling step candleFilling) {
+                    arrDot.sort(i, candleFilling + i - 1)
+                    if (x1 <= wight) {
+                        g.drawLine(x1, arrDot[i].toInt(), x1, arrDot[candleFilling + i - 1].toInt())
+                    } else {
+                        println("график вылез за границу")
+                    }
+                    x1++
                 }
-                else { println("график вылез за границу")}
-                x1++
+            }
+            else{
+                var stepX = wight/(finish - start)
+                for (i in start..finish - 1) {
+                    //arrDot.sort(i, candleFilling + i - 1)
+                    if (x <= wight) {
+                        g.drawOval(x1, arrDot[i].toInt(), 1, 1)
+                        if (i > 0){g.drawLine(x1, arrDot[i].toInt(), x1-stepX.toInt(), arrDot[i-1].toInt())}
+                    } else {
+                        println("график вылез за границу")
+                    }
+                    x1 += stepX.toInt()
+                }
             }
 
             g.color = Color.BLACK

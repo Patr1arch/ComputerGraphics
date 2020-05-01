@@ -9,7 +9,7 @@ import javax.swing.JFileChooser
 
 fun FileToSignal(f: File) : Signal{
     val listSTR: List<String> = f.readLines()
-    val channelsNumber: Int = listSTR[1].toI    nt()
+    val channelsNumber: Int = listSTR[1].toInt()
     val samplesNumber: Int = listSTR[3].toInt()
     val samplingRate: String = listSTR[5].toString()
     val startDate: String = listSTR[7]
