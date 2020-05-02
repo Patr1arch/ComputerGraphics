@@ -25,10 +25,11 @@ fun InitModel(v: String): Signal{
 }
 
 fun v1(date: String, time: String, samplenumber_: Int, N0: String, samplingrate_: String): Signal{
+    /** эти 3 строчки создают сигнал из одного канала размером samplenumber_, скорее всего вам из менять не нужно!!!**/
     val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
-    var cout = 0
     var channelsnames = Array<String?>(1,{ i -> "delayed_single_pulse"})
     var sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
+
     for (i in 0..samplenumber_-1){
         val str = sgn.WhatTime(i)
         if (i == N0.toInt()){
