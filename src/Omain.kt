@@ -18,18 +18,14 @@ import java.awt.Canvas
 
 import javax.swing.JFileChooser;
 import TestMDI.ItemWindow
-import com.jfoenix.controls.JFXButton
 import kotlin.math.abs
 import javax.swing.JPanel
 import javax.swing.JMenuItem
 import javax.swing.JPopupMenu
-import com.sun.java.accessibility.util.AWTEventMonitor.addMouseListener
-import com.sun.org.apache.xml.internal.security.Init
 import javax.swing.text.StyleConstants.getComponent
 import java.awt.event.MouseAdapter
 import javax.swing.JTextField
 import javax.swing.JButton
-import jdk.nashorn.internal.runtime.GlobalFunctions.anonymous
 import java.io.FileFilter
 import java.io.ObjectInputStream
 import java.util.*
@@ -451,6 +447,21 @@ class TestMDI : JFrame() {
         discretMenu.add(v6)
         v1.addActionListener{
             CreateModelWindow("v1")
+        }
+        v2.addActionListener{
+            CreateModelWindow("v2")
+        }
+        v3.addActionListener{
+            CreateModelWindow("v3")
+        }
+        v4.addActionListener{
+            CreateModelWindow("v4")
+        }
+        v5.addActionListener{
+            CreateModelWindow("v5")
+        }
+        v6.addActionListener{
+            CreateModelWindow("v6")
         }
         modelMenu.add(discretMenu)
         modelMenu.add(randomMenu)
