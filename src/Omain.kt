@@ -653,7 +653,7 @@ class TestMDI : JFrame() {
         descPan = JDesktopPane()
 
         contentPane.add(descPan, "Center")
-        title = "Название нашей программы"
+        title = "Компьютерная графика"
         setSize(500, 300)
         descPan.desktopManager = DefaultDesktopManager()
     }
