@@ -197,7 +197,7 @@ class TestMDI : JFrame() {
             modelWind.addComponentListener(MDIResizeListener())
 
             var sgn: Signal = InitModel(v)
-            var ch: SuperChannel = SuperChannel(sgn, 0, 600f, 200f, 0, sgn.samplesnumber, false)
+            var ch: SuperChannel = SuperChannel(sgn, 0, modelWind.width - 50.toFloat(), 200f, 0, sgn.samplesnumber, false)
             ch.canv.preferredSize = Dimension(modelWind.width - 50, 220)
             ch.isCoordinates = true
             modelContents.add(ch.canv)
