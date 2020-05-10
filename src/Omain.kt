@@ -59,11 +59,7 @@ class TestMDI : JFrame() {
     internal var menuGlue = Box.createHorizontalGlue()
 
     var WhereWasFile = File(System.getProperty("user.home"))
-    fun LoadChannal (): File{ //String{
-//        val fileChooser = JFileChooser()
-//        fileChooser.setCurrentDirectory(File(System.getProperty("user.home")));
-//        val result = fileChooser.showOpenDialog(parent)
-//        val selectedFile: File = fileChooser.selectedFile
+    fun MyFileDialog (): File{ //String{
         var inputString: String = String()
         val fileChooser = JFileChooser()
         fileChooser.currentDirectory = WhereWasFile
@@ -80,6 +76,19 @@ class TestMDI : JFrame() {
         //return inputString
         return  selectedFile
 
+    }
+
+    fun SaveChannal ():File{
+        var fileChooser = JFileChooser()
+        fileChooser.setDialogTitle("Выбор директории")
+        // Определение режима - только каталог
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY)
+        var result: Int = fileChooser.showOpenDialog(this)
+        // Если директория выбрана, покажем ее в сообщении
+        if (result == JFileChooser.APPROVE_OPTION ) {
+            JOptionPane.showMessageDialog(this, fileChooser.getSelectedFile())
+        }
+        return fileChooser.selectedFile
     }
 
 
@@ -200,6 +209,14 @@ class TestMDI : JFrame() {
             var ch: SuperChannel = SuperChannel(sgn, 0, modelWind.width - 50.toFloat(), 200f, 0, sgn.samplesnumber, false)
             ch.canv.preferredSize = Dimension(modelWind.width - 50, 220)
             ch.isCoordinates = true
+
+            var saveBut: JButton = JButton("Сохранить")
+            saveBut.addActionListener{
+                SignalToFile(MyFileDialog(), sgn)
+                //SignalToFile(SaveChannal(), sgn)
+            }
+
+            modelContents.add(saveBut)
             modelContents.add(ch.canv)
 
             modelWind.setContentPane(modelContents)
@@ -506,7 +523,7 @@ class TestMDI : JFrame() {
             createOscilogram()
         }
         loadSignal.addActionListener {
-            val channelFile = LoadChannal()
+            val channelFile = MyFileDialog()
             var sgn: Signal = FileToSignal(channelFile)
             var internalFrame = ItemWindow("Сигналы", true, true, false, false)
             var hihiHeight = sgn.channels * 110

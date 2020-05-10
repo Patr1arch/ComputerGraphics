@@ -12,7 +12,7 @@ fun InitModel(v: String): Signal{
             var samplingrate_ = JTextField("1")
             val N0 = JTextField("5000")
             var samplenumber_ = JTextField("10000")
-            val inputs = arrayOf<JComponent>(JLabel("start date :"), date, JLabel("sampling rate :"), samplingrate_, JLabel("start time :"), time, JLabel("N (0)"), N0, JLabel("Кол-во элементов"), samplenumber_)
+            val inputs = arrayOf<JComponent>(JLabel("start date :"), date, JLabel("start time :"), time, JLabel("sampling rate :"), samplingrate_, JLabel("N (0)"), N0, JLabel("Кол-во элементов"), samplenumber_)
             val result =
                 JOptionPane.showConfirmDialog(null, inputs, "Взодные параметры", JOptionPane.PLAIN_MESSAGE)
             if (result == JOptionPane.OK_OPTION) {
@@ -28,7 +28,7 @@ fun InitModel(v: String): Signal{
         var samplingrate_ = JTextField("1")
         val N0 = JTextField("5000")
         var samplenumber_ = JTextField("10000")
-        val inputs = arrayOf<JComponent>(JLabel("start date :"), date, JLabel("sampling rate :"), samplingrate_, JLabel("start time :"), time, JLabel("N (0)"), N0, JLabel("Кол-во элементов"), samplenumber_)
+        val inputs = arrayOf<JComponent>(JLabel("start date :"), date, JLabel("start time :"), time, JLabel("sampling rate :"), samplingrate_, JLabel("N (0)"), N0, JLabel("Кол-во элементов"), samplenumber_)
         val result =
             JOptionPane.showConfirmDialog(null, inputs, "Взодные параметры", JOptionPane.PLAIN_MESSAGE)
         if (result == JOptionPane.OK_OPTION) {
@@ -42,14 +42,13 @@ fun InitModel(v: String): Signal{
         val time = JTextField("00:00:00")
         val date = JTextField("01-01-2020")
         var samplingrate_ = JTextField("1")
-        val N0 = JTextField("5000")
         var samplenumber_ = JTextField("10000")
-        var a = JTextField("1") //период решетки
-        val inputs = arrayOf<JComponent>(JLabel("start date :"), date, JLabel("sampling rate :"), samplingrate_, JLabel("start time :"), time, JLabel("N (0)"), N0, JLabel("Кол-во элементов"), samplenumber_, JLabel("Значение элементов :"), a)
+        var a = JTextField("1")
+        val inputs = arrayOf<JComponent>(JLabel("start date :"), date, JLabel("start time :"), time, JLabel("sampling rate :"), samplingrate_, JLabel("Кол-во элементов"), samplenumber_, JLabel("Значение элементов :"), a)
         val result =
             JOptionPane.showConfirmDialog(null, inputs, "Взодные параметры", JOptionPane.PLAIN_MESSAGE)
         if ((result == JOptionPane.OK_OPTION) and (a.text.toFloat() >= 0) and (a.text.toFloat() <= 1)) {
-            sgn = v3(date.text, time.text, samplenumber_.text.toInt(), N0.text, samplingrate_.text, a.text.toFloat())
+            sgn = v3(date.text, time.text, samplenumber_.text.toInt(), samplingrate_.text, a.text.toFloat())
         } else {
             println("User canceled / closed the dialog, result = $result")
         }
@@ -59,16 +58,15 @@ fun InitModel(v: String): Signal{
         val time = JTextField("00:00:00")
         val date = JTextField("01-01-2020")
         var samplingrate_ = JTextField("1")
-        val N0 = JTextField("5000")
         var samplenumber_ = JTextField("10000")
         var a = JTextField("1") //амплитуда
         var w = JTextField("1") //круговая частота  от 0 до Pi
         var f = JTextField("1") //начальная фаза от 0 до 2 * Pi
-        val inputs = arrayOf<JComponent>(JLabel("start date :"), date, JLabel("sampling rate :"), samplingrate_, JLabel("start time :"), time, JLabel("N (0)"), N0, JLabel("Кол-во элементов"), samplenumber_, JLabel("Амплитуда :"), a, JLabel("Круговая частота :"), w, JLabel("Начальная фаза :"), f)
+        val inputs = arrayOf<JComponent>(JLabel("start date :"), date, JLabel("start time :"), time, JLabel("sampling rate :"), samplingrate_, JLabel("Кол-во элементов"), samplenumber_, JLabel("Амплитуда :"), a, JLabel("Круговая частота :"), w, JLabel("Начальная фаза :"), f)
         val result =
             JOptionPane.showConfirmDialog(null, inputs, "Взодные параметры", JOptionPane.PLAIN_MESSAGE)
         if (result == JOptionPane.OK_OPTION) {
-            sgn = v4(date.text, time.text, samplenumber_.text.toInt(), N0.text, samplingrate_.text, a.text.toInt(), w.text.toInt(), f.text.toInt())
+            sgn = v4(date.text, time.text, samplenumber_.text.toInt(),samplingrate_.text, a.text.toInt(), w.text.toInt(), f.text.toInt())
         } else {
             println("User canceled / closed the dialog, result = $result")
         }
@@ -81,11 +79,11 @@ fun InitModel(v: String): Signal{
         val N0 = JTextField("5000")
         var samplenumber_ = JTextField("10000")
         var L = JTextField("50") //период решетки
-        val inputs = arrayOf<JComponent>(JLabel("start date :"), date, JLabel("sampling rate :"), samplingrate_, JLabel("start time :"), time, JLabel("N (0)"), N0, JLabel("Кол-во элементов"), samplenumber_, JLabel("Период :"), L)
+        val inputs = arrayOf<JComponent>(JLabel("start date :"), date, JLabel("start time :"), time, JLabel("sampling rate :"), samplingrate_, JLabel("Кол-во элементов"), samplenumber_, JLabel("Период :"), L)
         val result =
             JOptionPane.showConfirmDialog(null, inputs, "Взодные параметры", JOptionPane.PLAIN_MESSAGE)
         if (result == JOptionPane.OK_OPTION) {
-            sgn = v5(date.text, time.text, samplenumber_.text.toInt(), N0.text, samplingrate_.text, L.text.toInt())
+            sgn = v5(date.text, time.text, samplenumber_.text.toInt(), samplingrate_.text, L.text.toInt())
         } else {
             println("User canceled / closed the dialog, result = $result")
         }
@@ -98,11 +96,11 @@ fun InitModel(v: String): Signal{
         val N0 = JTextField("5000")
         var samplenumber_ = JTextField("10000")
         var L = JTextField("50") //период решетки
-        val inputs = arrayOf<JComponent>(JLabel("start date :"), date, JLabel("sampling rate :"), samplingrate_, JLabel("start time :"), time, JLabel("N (0)"), N0, JLabel("Кол-во элементов"), samplenumber_, JLabel("Период :"), L)
+        val inputs = arrayOf<JComponent>(JLabel("start date :"), date, JLabel("start time :"), time, JLabel("sampling rate :"), samplingrate_, JLabel("N (0)"), N0, JLabel("Кол-во элементов"), samplenumber_, JLabel("Период :"), L)
         val result =
             JOptionPane.showConfirmDialog(null, inputs, "Взодные параметры", JOptionPane.PLAIN_MESSAGE)
         if (result == JOptionPane.OK_OPTION) {
-            sgn = v6(date.text, time.text, samplenumber_.text.toInt(), N0.text, samplingrate_.text, L.text.toInt())
+            sgn = v6(date.text, time.text, samplenumber_.text.toInt(), samplingrate_.text, L.text.toInt())
         } else {
             println("User canceled / closed the dialog, result = $result")
         }
@@ -141,7 +139,7 @@ fun v2(date: String, time: String, samplenumber_: Int, N0: String, samplingrate_
     return sgn
 }
 
-fun v4(date: String, time: String, samplenumber_: Int, N0: String, samplingrate_: String, a: Int, w: Int, f: Int): Signal{
+fun v4(date: String, time: String, samplenumber_: Int, samplingrate_: String, a: Int, w: Int, f: Int): Signal{
     /** эти 3 строчки создают сигнал из одного канала размером samplenumber_, скорее всего вам из менять не нужно!!!**/
     val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
     var channelsnames = Array<String?>(1,{ i -> "sinusoid"})
@@ -155,7 +153,7 @@ fun v4(date: String, time: String, samplenumber_: Int, N0: String, samplingrate_
     return sgn
 }
 
-fun v3(date: String, time: String, samplenumber_: Int, N0: String, samplingrate_: String, a: Float): Signal{
+fun v3(date: String, time: String, samplenumber_: Int, samplingrate_: String, a: Float): Signal{
     /** эти 3 строчки создают сигнал из одного канала размером samplenumber_, скорее всего вам из менять не нужно!!!**/
     val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
     var channelsnames = Array<String?>(1,{ i -> "exponent"})
@@ -167,7 +165,7 @@ fun v3(date: String, time: String, samplenumber_: Int, N0: String, samplingrate_
     return sgn
 }
 
-fun v5(date: String, time: String, samplenumber_: Int, N0: String, samplingrate_: String, L: Int): Signal{
+fun v5(date: String, time: String, samplenumber_: Int, samplingrate_: String, L: Int): Signal{
     /** эти 3 строчки создают сигнал из одного канала размером samplenumber_, скорее всего вам из менять не нужно!!!**/
     val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
     var channelsnames = Array<String?>(1,{ i -> "meander"})
@@ -185,7 +183,7 @@ fun v5(date: String, time: String, samplenumber_: Int, N0: String, samplingrate_
 }
 
 
-fun v6(date: String, time: String, samplenumber_: Int, N0: String, samplingrate_: String, L: Int): Signal{
+fun v6(date: String, time: String, samplenumber_: Int, samplingrate_: String, L: Int): Signal{
     /** эти 3 строчки создают сигнал из одного канала размером samplenumber_, скорее всего вам из менять не нужно!!!**/
     val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
     var channelsnames = Array<String?>(1,{ i -> "saw"})
