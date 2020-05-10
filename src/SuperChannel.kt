@@ -165,11 +165,11 @@ class SuperChannel(sgn_: Signal, channelNum_: Int, wight_: Float, hight_: Float,
                 g.drawString(coordinates[start_ + ((finish_ - start_) / 4) * 3].toString(), 5, hight_.toInt() / 4)
                 g.drawString(coordinates[finish_ - 1].toString(), 5, 10)
 
-                g.drawString(sgn.WhatTime((finish - start)/6 * 1 + start), (wight/6).toInt() * 1 - 15, hight.toInt() + 15)
-                g.drawString(sgn.WhatTime((finish - start)/6 * 2 + start), (wight/6).toInt() * 2 - 15, hight.toInt() + 15)
-                g.drawString(sgn.WhatTime((finish - start)/6 * 3 + start), (wight/6).toInt() * 3 - 15, hight.toInt() + 15)
-                g.drawString(sgn.WhatTime((finish - start)/6 * 4 + start), (wight/6).toInt() * 4 - 15, hight.toInt() + 15)
-                g.drawString(sgn.WhatTime((finish - start)/6 * 5 + start), (wight/6).toInt() * 5 - 15, hight.toInt() + 15)
+                g.drawString(sgn.WhatTime((finish - start)/6 * 1 + start, sgn.samplingrate.toFloat()), (wight/6).toInt() * 1 - 15, hight.toInt() + 15)
+                g.drawString(sgn.WhatTime((finish - start)/6 * 2 + start,sgn.samplingrate.toFloat()), (wight/6).toInt() * 2 - 15, hight.toInt() + 15)
+                g.drawString(sgn.WhatTime((finish - start)/6 * 3 + start, sgn.samplingrate.toFloat()), (wight/6).toInt() * 3 - 15, hight.toInt() + 15)
+                g.drawString(sgn.WhatTime((finish - start)/6 * 4 + start, sgn.samplingrate.toFloat()), (wight/6).toInt() * 4 - 15, hight.toInt() + 15)
+                g.drawString(sgn.WhatTime((finish - start)/6 * 5 + start, sgn.samplingrate.toFloat()), (wight/6).toInt() * 5 - 15, hight.toInt() + 15)
 
                 g.color = Color.GRAY
                 //g.drawLine(0, hight.toInt() - 5, wight.toInt(), hight.toInt() - 5)

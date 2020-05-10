@@ -116,7 +116,7 @@ fun v1(date: String, time: String, samplenumber_: Int, N0: String, samplingrate_
     var sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
 
     for (i in 0..samplenumber_-1){
-        val str = sgn.WhatTime(i)
+
         if (i == N0.toInt()){
             sgn.arraChannels[0][i] = 100f
         }
@@ -131,7 +131,7 @@ fun v2(date: String, time: String, samplenumber_: Int, N0: String, samplingrate_
     var sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
 
     for (i in 0..samplenumber_-1){
-        val str = sgn.WhatTime(i)
+
         if (i >= N0.toInt()){
             sgn.arraChannels[0][i] = 100f
         }
