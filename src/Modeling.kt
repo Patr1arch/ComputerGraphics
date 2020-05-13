@@ -1,6 +1,7 @@
 import java.lang.Math.*
 import javax.swing.*
 import java.util.Date
+import kotlin.math.exp
 
 fun InitModel(v: String): Signal{
 
@@ -106,6 +107,32 @@ fun InitModel(v: String): Signal{
         }
     }
 
+    if (v == "v7"){
+        val time = JTextField("00:00:00")
+        val date = JTextField("01-01-2020")
+        var samplingrate_ = JTextField("1")
+        val N0 = JTextField("5000")
+        var samplenumber_ = JTextField("10000")
+        var L = JTextField("50") //период решетки
+        var a = JTextField("1") //amplitude
+        var t = JTextField("1") //width of envelope
+        var f = JTextField("1") //frequency
+        var phi = JTextField("0") //phase
+        val inputs = arrayOf<JComponent>(JLabel("start date :"),
+            date, JLabel("start time :"), time, JLabel("sampling rate :"),
+            samplingrate_, JLabel("N (0)"), N0, JLabel("Кол-во элементов"),
+            samplenumber_, JLabel("Период :"), L, JLabel("амплитуда"), a, JLabel("ширина огибающей"), t,
+        JLabel("частота"), f, JLabel("Фаза"), phi)
+        val result =
+            JOptionPane.showConfirmDialog(null, inputs, "Вводные параметры", JOptionPane.PLAIN_MESSAGE)
+        if (result == JOptionPane.OK_OPTION) {
+            sgn = v7(date.text, time.text, samplenumber_.text.toInt(), samplingrate_.text, t.text.toDouble(), a.text.toDouble(), f.text.toDouble(), phi.text.toDouble())
+        } else {
+            println("User canceled / closed the dialog, result = $result")
+        }
+
+    }
+//date: String, time: String, samplenumber_: Int, samplingrate_: String, T: Double, a: Double, f: Double, phi: Double
     return sgn
 }
 
@@ -191,6 +218,18 @@ fun v6(date: String, time: String, samplenumber_: Int, samplingrate_: String, L:
 
     for (i in 0..samplenumber_-1){
         sgn.arraChannels[0][i] = (i%L)/L.toFloat()
+    }
+    return sgn
+}
+
+fun v7(date: String, time: String, samplenumber_: Int, samplingrate_: String, T: Double, a: Double, f: Double, phi: Double): Signal{
+    val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
+    var channelsnames = Array<String?>(1,{ i -> "exponentEnvelope"})
+    var sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
+
+    for (i in 0..samplenumber_-1){
+        sgn.arraChannels[0][i] = ((a*exp(-(i.toDouble()/T))*cos(2*PI*f*i.toDouble()+phi)).toFloat())
+        println(sgn.arraChannels[0][i])
     }
     return sgn
 }

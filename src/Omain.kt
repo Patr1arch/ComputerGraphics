@@ -456,12 +456,14 @@ class TestMDI : JFrame() {
         val v4 = JMenuItem("4)синусоид с заданными амплитудой ")
         val v5 = JMenuItem("5)«меандр»")
         val v6 = JMenuItem("6)“пила”")
+        val v7 = JMenuItem("6)“экспоненциальная огибающая ”")
         discretMenu.add(v1)
         discretMenu.add(v2)
         discretMenu.add(v3)
         discretMenu.add(v4)
         discretMenu.add(v5)
         discretMenu.add(v6)
+        discretMenu.add(v7)
         v1.addActionListener{
             CreateModelWindow("v1")
         }
@@ -479,6 +481,9 @@ class TestMDI : JFrame() {
         }
         v6.addActionListener{
             CreateModelWindow("v6")
+        }
+        v7.addActionListener{
+            CreateModelWindow("v7")
         }
         modelMenu.add(discretMenu)
         modelMenu.add(randomMenu)
