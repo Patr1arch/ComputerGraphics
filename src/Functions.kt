@@ -17,7 +17,8 @@ fun FileToSignal(f: File) : Signal{
     val samplesNumber: Int = listSTR[3].toInt()
     val samplingRate: String = listSTR[5].toString()
     val startDate: String = listSTR[7]
-    val startTime: String = listSTR[9]
+    var startTime: String = listSTR[9]
+    startTime = (startTime[0].toString() + startTime[1].toString() + startTime[2].toString() + startTime[3].toString() + startTime[4].toString() + startTime[5].toString() + startTime[6].toString() + startTime[7].toString()).toString()
     var channelsnames = arrayOfNulls<String>(channelsNumber)
     channelsnames[0] = ""
     var cout: Int = 0

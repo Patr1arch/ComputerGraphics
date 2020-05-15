@@ -9,7 +9,7 @@ class Signal(chan: Int, samplesnumber_: Int, samplingrate_: String, startdate_: 
     var startdate: String = startdate_
     var starttime: String = starttime_
     var arraChannels: Array<Array<Float>> = arraChannels
-    var from: String = "Файл: " + from_                                               //это источник
+    var from: String = from_                                               //это источник
     var channelsnames: Array<String?> = channelsnames_
     //var channelsnames = emptyArray<String>()
 
