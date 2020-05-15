@@ -187,54 +187,15 @@ fun InitModel(v: String): Signal {
         }
     }
 
-    if (v == "v7") {
-        val time = JTextField("00:00:00")
-        val date = JTextField("01-01-2020")
-        var samplingrate_ = JTextField("1")
-        var samplenumber_ = JTextField("10000")
-        var L = JTextField("50") //период решетки
-        var a = JTextField("1") //amplitude
-        var t = JTextField("1") //width of envelope
-        var f = JTextField("1") //frequency
-        //var fd = JTextField("0.5") //frequency d
-        var phi = JTextField("0") //phase
-        val inputs = arrayOf<JComponent>(
-            JLabel("start date :"),
-            date, JLabel("start time :"), time, JLabel("sampling rate :"),
-            samplingrate_, JLabel("Кол-во элементов"),
-            samplenumber_, JLabel("Период :"), L, JLabel("амплитуда"), a, JLabel("ширина огибающей"), t,
-            JLabel("частота"), f, JLabel("Фаза"), phi
-        )
-        val result =
-            JOptionPane.showConfirmDialog(null, inputs, "Вводные параметры", JOptionPane.PLAIN_MESSAGE)
-
-        if (result == JOptionPane.OK_OPTION) {
-//            if (f.text.toFloat() < 0 || f.text.toFloat() > 0.05) {
-//                println("frequency is wrong, result = $result")
-//            }
-            sgn = v7(
-                date.text,
-                time.text,
-                samplenumber_.text.toInt(),
-                samplingrate_.text,
-                t.text.toDouble(),
-                a.text.toDouble(),
-                f.text.toDouble(),
-                phi.text.toDouble()
-            )
-        } else {
-            println("User canceled / closed the dialog, result = $result")
-        }
-
         if (v == "v7") {
             val time = JTextField("00:00:00")
             val date = JTextField("01-01-2020")
-            var samplingrate_ = JTextField("1")
+            var samplingrate_ = JTextField("200")
             var samplenumber_ = JTextField("10000")
             var L = JTextField("50") //период решетки
             var a = JTextField("1") //amplitude
-            var t = JTextField("1") //width of envelope
-            var f = JTextField("1") //frequency
+            var t = JTextField("10") //width of envelope
+            var f = JTextField("0.5") //frequency
             //var fd = JTextField("0.5") //frequency d
             var phi = JTextField("0") //phase
             val inputs = arrayOf<JComponent>(
@@ -265,7 +226,7 @@ fun InitModel(v: String): Signal {
                 println("User canceled / closed the dialog, result = $result")
             }
         }
-    }
+
         if (v == "v8") {
             val time = JTextField("00:00:00")
             val date = JTextField("01-01-2020")
