@@ -1,6 +1,3 @@
-
-
-
 import javafx.stage.FileChooser
 import javax.*
 import javax.swing.*
@@ -456,7 +453,9 @@ class TestMDI : JFrame() {
         val v4 = JMenuItem("4)синусоид с заданными амплитудой ")
         val v5 = JMenuItem("5)«меандр»")
         val v6 = JMenuItem("6)“пила”")
-        val v7 = JMenuItem("6)“экспоненциальная огибающая ”")
+        val v7 = JMenuItem("7)экспоненциальная огибающая")
+        val v8 = JMenuItem("8)балансная огибающая")
+        val v9 = JMenuItem("9)тональная огибающая")
         discretMenu.add(v1)
         discretMenu.add(v2)
         discretMenu.add(v3)
@@ -464,6 +463,8 @@ class TestMDI : JFrame() {
         discretMenu.add(v5)
         discretMenu.add(v6)
         discretMenu.add(v7)
+        discretMenu.add(v8)
+        discretMenu.add(v9)
         v1.addActionListener{
             CreateModelWindow("v1")
         }
@@ -485,6 +486,12 @@ class TestMDI : JFrame() {
         v7.addActionListener{
             CreateModelWindow("v7")
         }
+        v8.addActionListener{
+            CreateModelWindow("v8")
+        }
+        v9.addActionListener{
+            CreateModelWindow("v9")
+        }
         modelMenu.add(discretMenu)
         modelMenu.add(randomMenu)
 
@@ -504,7 +511,7 @@ class TestMDI : JFrame() {
             contents.add(JTextField("Маша Ярушина"))
             contents.add(JTextField("Влад Роговой"))
             contents.add(JTextField("Никита Баранов"))
-            contents.add(JTextField("Тина Савченко"))
+            contents.add(JTextField("Валентина Савченко"))
 
             // Размещаем панель в контейнере
             infAboutInternalFrame.setContentPane(contents)
@@ -710,4 +717,3 @@ class TestMDI : JFrame() {
         }
     }
 }
-

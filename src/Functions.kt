@@ -89,5 +89,3 @@ class OscillogramList{
 //        canvasList.add(canv)
 //    }
 }
-
-

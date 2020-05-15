@@ -1,6 +1,3 @@
-
-
-
 import javafx.scene.input.MouseDragEvent
 import kotlin.math.abs
 
