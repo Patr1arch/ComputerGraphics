@@ -230,7 +230,7 @@ fun InitModel(v: String): Signal {
         if (v == "v8") {
             val time = JTextField("00:00:00")
             val date = JTextField("01-01-2020")
-            var samplingrate_ = JTextField("1")
+            var samplingrate_ = JTextField("1000")
             var samplenumber_ = JTextField("10000")
             var L = JTextField("50") //период решетки
             var a = JTextField("1") //amplitude
@@ -249,20 +249,23 @@ fun InitModel(v: String): Signal {
                 JOptionPane.showConfirmDialog(null, inputs, "Вводные параметры", JOptionPane.PLAIN_MESSAGE)
 
             if (result == JOptionPane.OK_OPTION) {
-//            if (f.text.toFloat() < 0 || f.text.toFloat() > 0.05) {
-//                println("frequency is wrong, result = $result")
-//            }
-                sgn = v8(
-                    date.text,
-                    time.text,
-                    samplenumber_.text.toInt(),
-                    samplingrate_.text,
-                    t.text.toDouble(),
-                    a.text.toDouble(),
-                    f.text.toDouble(),
-                    fo.text.toDouble(),
-                    phi.text.toDouble()
-                )
+                if (f.text.toFloat() < 0 || f.text.toFloat() > f.text.toFloat() * samplingrate_.text.toFloat()) {
+                    println("frequency is wrong, result = $result")
+
+                } else{
+                    sgn = v8(
+                        date.text,
+                        time.text,
+                        samplenumber_.text.toInt(),
+                        samplingrate_.text,
+                        t.text.toDouble(),
+                        a.text.toDouble(),
+                        f.text.toDouble(),
+                        fo.text.toDouble(),
+                        phi.text.toDouble()
+                    )
+                }
+
             } else {
                 println("User canceled / closed the dialog, result = $result")
             }
@@ -270,7 +273,7 @@ fun InitModel(v: String): Signal {
     if (v == "v9") {
         val time = JTextField("00:00:00")
         val date = JTextField("01-01-2020")
-        var samplingrate_ = JTextField("1")
+        var samplingrate_ = JTextField("1000")
         var samplenumber_ = JTextField("10000")
         var L = JTextField("50") //период решетки
         var a = JTextField("1") //amplitude
@@ -278,7 +281,7 @@ fun InitModel(v: String): Signal {
         var f = JTextField("1") //frequency
         var fo = JTextField("0.5") //envelope frequency
         var phi = JTextField("0") //phase
-        var m = JTextField("0") //depth
+        var m = JTextField("0.5") //depth
         val inputs = arrayOf<JComponent>(
             JLabel("start date :"),
             date, JLabel("start time :"), time, JLabel("sampling rate :"),
@@ -409,7 +412,7 @@ fun v7(date: String, time: String, samplenumber_: Int, samplingrate_: String, T:
 
     var x = 0.0;
     for (i in 0..samplenumber_-1){
-        sgn.arraChannels[0][i] = ((a*exp(-(x.toDouble()/T))*cos(2*PI*f*samplingrate_.toFloat()*x.toDouble()+phi)).toFloat())
+        sgn.arraChannels[0][i] = ((a*exp(-(x.toDouble()/T))*cos(2*PI*f*x.toDouble()+phi)).toFloat())
         x += 1/samplingrate_.toFloat()
         println(sgn.arraChannels[0][i])
     }
@@ -422,7 +425,7 @@ fun v8(date: String, time: String, samplenumber_: Int, samplingrate_: String, T:
     var sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
     var x = 0.0;
     for (i in 0..samplenumber_-1){
-        sgn.arraChannels[0][i] = (a*cos(2*PI*fo*x + phi) *cos(2*PI*f*samplingrate_.toFloat())).toFloat()
+        sgn.arraChannels[0][i] = (a*cos(2*PI*fo*x + phi) *cos(2*PI*f*x)).toFloat()
         x += 1/samplingrate_.toFloat()
         println(sgn.arraChannels[0][i])
     }
@@ -436,7 +439,7 @@ fun v9(date: String, time: String, samplenumber_: Int, samplingrate_: String, T:
     var sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
     var x = 0.0;
     for (i in 0..samplenumber_-1){
-        sgn.arraChannels[0][i] = (a*(1 + m*cos(2*PI*fo*x))*cos(2*PI*f*samplingrate_.toFloat() + phi)).toFloat()
+        sgn.arraChannels[0][i] = (a*(1 + m*cos(2*PI*fo*x))*cos(2*PI*f*x + phi)).toFloat()
         x += 1/samplingrate_.toFloat()
         println(sgn.arraChannels[0][i])
     }
