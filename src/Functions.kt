@@ -68,7 +68,8 @@ fun SignalToFile (f: File, sgn: Signal){
     for (i in 0..sgn.samplesnumber-1) {
         for(j in 0..sgn.channels-1) {
             str += sgn.arraChannels[j][i]
-            if (j != sgn.channels-1) str += " "
+            //if (j != sgn.channels-1) str += " "
+            str += " "
         }
         str += "\n"
     }
