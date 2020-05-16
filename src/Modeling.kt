@@ -29,7 +29,7 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
             samplingrate_,
             JLabel("Кол-во элементов"),
             samplenumber_,
-            JLabel("-------------------"),
+            JLabel("--------------------------------------"),
             JLabel("N (0)"),
             N0
         )
@@ -55,10 +55,11 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
             time,
             JLabel("sampling rate :"),
             samplingrate_,
-            JLabel("N (0)"),
-            N0,
             JLabel("Кол-во элементов"),
-            samplenumber_
+            samplenumber_,
+            JLabel("--------------------------------------"),
+            JLabel("N (0)"),
+            N0
         )
         val result =
             JOptionPane.showConfirmDialog(null, inputs, "Взодные параметры", JOptionPane.PLAIN_MESSAGE)
@@ -84,6 +85,7 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
             samplingrate_,
             JLabel("Кол-во элементов"),
             samplenumber_,
+            JLabel("--------------------------------------"),
             JLabel("Параметр убывания А (от 0 до 1) :"),
             a
         )
@@ -113,6 +115,7 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
             samplingrate_,
             JLabel("Кол-во элементов"),
             samplenumber_,
+            JLabel("--------------------------------------"),
             JLabel("Амплитуда :"),
             a,
             JLabel("Круговая частота :"),
@@ -181,6 +184,7 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
             samplingrate_,
             JLabel("Кол-во элементов"),
             samplenumber_,
+            JLabel("--------------------------------------"),
             JLabel("Период :"),
             L
         )
@@ -206,9 +210,10 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
         var phi = JTextField("0") //phase
         val inputs = arrayOf<JComponent>(
             JLabel("start date :"),
-            date, JLabel("start time :"), time, JLabel("sampling rate :"),
-            samplingrate_, JLabel("Кол-во элементов"),
-            samplenumber_, JLabel("Период :"), L, JLabel("амплитуда"), a, JLabel("ширина огибающей"), t,
+            date, JLabel("start time :"), time, JLabel("sampling rate :"), samplingrate_,
+            JLabel("Кол-во элементов"), samplenumber_,
+            JLabel("--------------------------------------"),
+            JLabel("Период :"), L, JLabel("амплитуда"), a, JLabel("ширина огибающей"), t,
             JLabel("частота несущей (от 0 до 0.5 дискритизации)"), f, JLabel("Фаза"), phi
         )
         val result =
@@ -246,9 +251,10 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
         var phi = JTextField("0") //phase
         val inputs = arrayOf<JComponent>(
             JLabel("start date :"),
-            date, JLabel("start time :"), time, JLabel("sampling rate :"),
-            samplingrate_, JLabel("Кол-во элементов"),
-            samplenumber_, JLabel("Период :"), L, JLabel("амплитуда"), a, JLabel("ширина огибающей"), t,
+            date, JLabel("start time :"), time, JLabel("sampling rate :"), samplingrate_,
+            JLabel("Кол-во элементов"), samplenumber_,
+            JLabel("--------------------------------------"),
+            JLabel("Период :"), L, JLabel("амплитуда"), a, JLabel("ширина огибающей"), t,
             JLabel("частота"), f, JLabel("Частота несущей"), fo, JLabel("Фаза"), phi
         )
         val result =
@@ -283,7 +289,7 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
 //        var samplenumber_ = JTextField("10000")
         var L = JTextField("50") //период решетки
         var a = JTextField("1") //amplitude
-        var t = JTextField("1") //width of envelope
+        //var t = JTextField("1") //width of envelope
         var f = JTextField("1") //frequency
         var fo = JTextField("0.5") //envelope frequency
         var phi = JTextField("0") //phase
@@ -291,9 +297,13 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
         val inputs = arrayOf<JComponent>(
             JLabel("start date :"),
             date, JLabel("start time :"), time, JLabel("sampling rate :"),
-            samplingrate_, JLabel("Кол-во элементов"),
-            samplenumber_, JLabel("Период :"), L, JLabel("амплитуда"), a, JLabel("ширина огибающей"), t,
-            JLabel("частота"), f, JLabel("Частота несущей"), fo, JLabel("Фаза"), phi, JLabel("Глубина"), m
+            samplingrate_, JLabel("Кол-во элементов"), samplenumber_,
+            JLabel("--------------------------------------"),
+            JLabel("Период :"), L, JLabel("амплитуда"), a,
+            JLabel("частота огибающей"), f,
+            JLabel("Частота несущей"), fo,
+            JLabel("Фаза"), phi,
+            JLabel("Глубина"), m
         )
         val result =
             JOptionPane.showConfirmDialog(null, inputs, "Вводные параметры", JOptionPane.PLAIN_MESSAGE)
@@ -307,7 +317,7 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
                 time.text,
                 samplenumber_.text.toInt(),
                 samplingrate_.text,
-                t.text.toDouble(),
+                //t.text.toDouble(),
                 a.text.toDouble(),
                 f.text.toDouble(),
                 fo.text.toDouble(),
@@ -439,7 +449,7 @@ fun v8(date: String, time: String, samplenumber_: Int, samplingrate_: String, T:
 }
 
 
-fun v9(date: String, time: String, samplenumber_: Int, samplingrate_: String, T: Double, a: Double, f: Double, fo: Double, phi: Double, m: Double): Signal {
+fun v9(date: String, time: String, samplenumber_: Int, samplingrate_: String, a: Double, f: Double, fo: Double, phi: Double, m: Double): Signal {
     val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
     var channelsnames = Array<String?>(1,{ i -> "tonEnvelope"})
     var sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
