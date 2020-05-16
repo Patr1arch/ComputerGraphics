@@ -2,10 +2,6 @@ import java.awt.Canvas
 import java.awt.Graphics
 import java.io.File
 import java.util.*
-import javax.swing.JButton
-import javax.swing.JFileChooser
-import com.sun.deploy.trace.Trace.flush
-import sun.text.normalizer.UTF16.append
 
 
 
