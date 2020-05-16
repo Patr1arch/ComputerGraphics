@@ -17,9 +17,6 @@ import java.io.File
 import java.awt.Canvas
 
 import javax.swing.JFileChooser;
-import TestMDI.ItemWindow
-import jdk.nashorn.internal.objects.Global
-import kotlin.math.abs
 import javax.swing.JPanel
 import javax.swing.JMenuItem
 import javax.swing.JPopupMenu
