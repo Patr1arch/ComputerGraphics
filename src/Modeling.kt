@@ -27,10 +27,11 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
             time,
             JLabel("sampling rate :"),
             samplingrate_,
-            JLabel("N (0)"),
-            N0,
             JLabel("Кол-во элементов"),
-            samplenumber_
+            samplenumber_,
+            JLabel("-------------------"),
+            JLabel("N (0)"),
+            N0
         )
         val result =
             JOptionPane.showConfirmDialog(null, inputs, "Взодные параметры", JOptionPane.PLAIN_MESSAGE)
@@ -83,7 +84,7 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
             samplingrate_,
             JLabel("Кол-во элементов"),
             samplenumber_,
-            JLabel("Значение элементов :"),
+            JLabel("Параметр убывания А (от 0 до 1) :"),
             a
         )
         val result =
@@ -127,9 +128,9 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
                 time.text,
                 samplenumber_.text.toInt(),
                 samplingrate_.text,
-                a.text.toInt(),
-                w.text.toInt(),
-                f.text.toInt()
+                a.text.toFloat(),
+                w.text.toFloat(),
+                f.text.toFloat()
             )
         } else {
             println("User canceled / closed the dialog, result = $result")
@@ -208,7 +209,7 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
             date, JLabel("start time :"), time, JLabel("sampling rate :"),
             samplingrate_, JLabel("Кол-во элементов"),
             samplenumber_, JLabel("Период :"), L, JLabel("амплитуда"), a, JLabel("ширина огибающей"), t,
-            JLabel("частота"), f, JLabel("Фаза"), phi
+            JLabel("частота несущей (от 0 до 0.5 дискритизации)"), f, JLabel("Фаза"), phi
         )
         val result =
             JOptionPane.showConfirmDialog(null, inputs, "Вводные параметры", JOptionPane.PLAIN_MESSAGE)
@@ -354,7 +355,7 @@ fun v2(date: String, time: String, samplenumber_: Int, N0: String, samplingrate_
     return sgn
 }
 
-fun v4(date: String, time: String, samplenumber_: Int, samplingrate_: String, a: Int, w: Int, f: Int): Signal{
+fun v4(date: String, time: String, samplenumber_: Int, samplingrate_: String, a: Float, w: Float, f: Float): Signal{
     /** эти 3 строчки создают сигнал из одного канала размером samplenumber_, скорее всего вам из менять не нужно!!!**/
     val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
     var channelsnames = Array<String?>(1,{ i -> "sinusoid"})
@@ -362,7 +363,7 @@ fun v4(date: String, time: String, samplenumber_: Int, samplingrate_: String, a:
 
     for (i in 0..samplenumber_-1){
 
-        sgn.arraChannels[0][i] = (a * sin((i * w * f).toDouble())).toFloat()
+        sgn.arraChannels[0][i] = (a * sin((i * w + f).toDouble())).toFloat()
 
     }
     return sgn
