@@ -243,10 +243,10 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
 //        val date = JTextField("01-01-2020")
 //        var samplingrate_ = JTextField("1000")
 //        var samplenumber_ = JTextField("10000")
-        var L = JTextField("50") //период решетки
+      //  var L = JTextField("50") //период решетки
         var a = JTextField("1") //amplitude
         var t = JTextField("1") //width of envelope
-        var f = JTextField("1") //frequency
+        var f = JTextField("1") //frequency of wave
         var fo = JTextField("0.5") //envelope frequency
         var phi = JTextField("0") //phase
         val inputs = arrayOf<JComponent>(
@@ -254,43 +254,40 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
             date, JLabel("start time :"), time, JLabel("sampling rate :"), samplingrate_,
             JLabel("Кол-во элементов"), samplenumber_,
             JLabel("--------------------------------------"),
-            JLabel("Период :"), L, JLabel("амплитуда"), a, JLabel("ширина огибающей"), t,
-            JLabel("частота"), f, JLabel("Частота несущей"), fo, JLabel("Фаза"), phi
+            JLabel("амплитуда"), a,
+            JLabel("частота огибающей"), fo, JLabel("Частота несущей"), f, JLabel("Фаза"), phi
         )
         val result =
             JOptionPane.showConfirmDialog(null, inputs, "Вводные параметры", JOptionPane.PLAIN_MESSAGE)
 
         if (result == JOptionPane.OK_OPTION) {
-            if (f.text.toFloat() < 0 || f.text.toFloat() > f.text.toFloat() * samplingrate_.text.toFloat()) {
-                println("frequency is wrong, result = $result")
+//date: String, time: String, samplenumber_: Int, samplingrate_: String, a: Double, f: Double, fo: Double, phi: Double
 
-            } else{
                 sgn = v8(
                     date.text,
                     time.text,
                     samplenumber_.text.toInt(),
                     samplingrate_.text,
-                    t.text.toDouble(),
                     a.text.toDouble(),
                     f.text.toDouble(),
                     fo.text.toDouble(),
                     phi.text.toDouble()
                 )
-            }
+
 
         } else {
+
             println("User canceled / closed the dialog, result = $result")
         }
     }
+
     if (v == "v9") {
 //        val time = JTextField("00:00:00")
 //        val date = JTextField("01-01-2020")
 //        var samplingrate_ = JTextField("1000")
 //        var samplenumber_ = JTextField("10000")
-        var L = JTextField("50") //период решетки
         var a = JTextField("1") //amplitude
-        //var t = JTextField("1") //width of envelope
-        var f = JTextField("1") //frequency
+        var f = JTextField("1") //frequency of wave
         var fo = JTextField("0.5") //envelope frequency
         var phi = JTextField("0") //phase
         var m = JTextField("0.5") //depth
@@ -299,11 +296,11 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
             date, JLabel("start time :"), time, JLabel("sampling rate :"),
             samplingrate_, JLabel("Кол-во элементов"), samplenumber_,
             JLabel("--------------------------------------"),
-            JLabel("Период :"), L, JLabel("амплитуда"), a,
-            JLabel("частота огибающей"), f,
-            JLabel("Частота несущей"), fo,
+           JLabel("амплитуда"), a,
+            JLabel("частота огибающей"), fo,
+            JLabel("Частота несущей"), f,
             JLabel("Фаза"), phi,
-            JLabel("Глубина"), m
+            JLabel("Индекс глубины модуляции (в интегрвале от 0 до 1)"), m
         )
         val result =
             JOptionPane.showConfirmDialog(null, inputs, "Вводные параметры", JOptionPane.PLAIN_MESSAGE)
@@ -317,7 +314,6 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
                 time.text,
                 samplenumber_.text.toInt(),
                 samplingrate_.text,
-                //t.text.toDouble(),
                 a.text.toDouble(),
                 f.text.toDouble(),
                 fo.text.toDouble(),
@@ -326,11 +322,10 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
             )
         } else {
             println("User canceled / closed the dialog, result = $result")
+
         }
     }
-
-
-//date: String, time: String, samplenumber_: Int, samplingrate_: String, T: Double, a: Double, f: Double, phi: Double
+        //date: String, time: String, samplenumber_: Int, samplingrate_: String, a: Double, f: Double, fo: Double, phi: Double, m: Double
     return sgn
 
 }
@@ -435,7 +430,7 @@ fun v7(date: String, time: String, samplenumber_: Int, samplingrate_: String, T:
     return sgn
 }
 
-fun v8(date: String, time: String, samplenumber_: Int, samplingrate_: String, T: Double, a: Double, f: Double, fo: Double, phi: Double): Signal {
+fun v8(date: String, time: String, samplenumber_: Int, samplingrate_: String, a: Double, f: Double, fo: Double, phi: Double): Signal {
     val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
     var channelsnames = Array<String?>(1,{ i -> "balanceEnvelope"})
     var sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)

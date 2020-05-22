@@ -3,7 +3,7 @@
 
 import javafx.scene.input.MouseDragEvent
 import kotlin.math.abs
-import sun.swing.SwingUtilities2.stringWidth
+
 import java.awt.*
 import java.awt.Font.ITALIC
 import java.awt.Font.BOLD

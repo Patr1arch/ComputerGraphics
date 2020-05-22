@@ -545,7 +545,7 @@ class TestMDI : JFrame() {
                 sgn = InitModel(v, GlobalSignal.starttime, GlobalSignal.startdate, GlobalSignal.samplingrate, GlobalSignal.samplesnumber.toString())
             }
             catch (e: UninitializedPropertyAccessException){
-                sgn = InitModel(v, "00:00:00", "01-01-2020", "1", "10000")
+                sgn = InitModel(v, "00:00:00", "01-01-2020", "100", "10000")
 
             }
 
