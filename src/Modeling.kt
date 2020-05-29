@@ -2,6 +2,7 @@ import java.lang.Math.*
 import javax.swing.*
 import java.util.Date
 import kotlin.math.exp
+import kotlin.random.Random
 
 fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSamplingRate: String, oldSampleNumber: String): Signal {
 
@@ -43,11 +44,7 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
     }
 
     if (v == "v2") {
-//        val time = JTextField("00:00:00")
-//        val date = JTextField("01-01-2020")
-//        var samplingrate_ = JTextField("1")
         val N0 = JTextField("5000")
-//        var samplenumber_ = JTextField("10000")
         val inputs = arrayOf<JComponent>(
             JLabel("start date :"),
             date,
@@ -71,10 +68,6 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
     }
 
     if (v == "v3") {
-//        val time = JTextField("00:00:00")
-//        val date = JTextField("01-01-2020")
-//        var samplingrate_ = JTextField("1")
-//        var samplenumber_ = JTextField("10000")
         var a = JTextField("1")
         val inputs = arrayOf<JComponent>(
             JLabel("start date :"),
@@ -99,10 +92,6 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
     }
 
     if (v == "v4") {
-//        val time = JTextField("00:00:00")
-//        val date = JTextField("01-01-2020")
-//        var samplingrate_ = JTextField("1")
-//        var samplenumber_ = JTextField("10000")
         var a = JTextField("1") //амплитуда
         var w = JTextField("1") //круговая частота  от 0 до Pi
         var f = JTextField("1") //начальная фаза от 0 до 2 * Pi
@@ -141,11 +130,6 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
     }
 
     if (v == "v5") {
-//        val time = JTextField("00:00:00")
-//        val date = JTextField("01-01-2020")
-//        var samplingrate_ = JTextField("1")
-//        val N0 = JTextField("5000")
-//        var samplenumber_ = JTextField("10000")
         var L = JTextField("50") //период решетки
         val inputs = arrayOf<JComponent>(
             JLabel("start date :"),
@@ -169,11 +153,6 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
     }
 
     if (v == "v6") {
-//        val time = JTextField("00:00:00")
-//        val date = JTextField("01-01-2020")
-//        var samplingrate_ = JTextField("1")
-//        val N0 = JTextField("5000")
-//        var samplenumber_ = JTextField("10000")
         var L = JTextField("50") //период решетки
         val inputs = arrayOf<JComponent>(
             JLabel("start date :"),
@@ -198,10 +177,6 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
     }
 
     if (v == "v7") {
-//        val time = JTextField("00:00:00")
-//        val date = JTextField("01-01-2020")
-//        var samplingrate_ = JTextField("200")
-//        var samplenumber_ = JTextField("10000")
         var L = JTextField("50") //период решетки
         var a = JTextField("1") //amplitude
         var t = JTextField("10") //width of envelope
@@ -239,10 +214,6 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
     }
 
     if (v == "v8") {
-//        val time = JTextField("00:00:00")
-//        val date = JTextField("01-01-2020")
-//        var samplingrate_ = JTextField("1000")
-//        var samplenumber_ = JTextField("10000")
       //  var L = JTextField("50") //период решетки
         var a = JTextField("1") //amplitude
         var t = JTextField("1") //width of envelope
@@ -282,10 +253,6 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
     }
 
     if (v == "v9") {
-//        val time = JTextField("00:00:00")
-//        val date = JTextField("01-01-2020")
-//        var samplingrate_ = JTextField("1000")
-//        var samplenumber_ = JTextField("10000")
         var a = JTextField("1") //amplitude
         var f = JTextField("1") //frequency of wave
         var fo = JTextField("0.5") //envelope frequency
@@ -324,6 +291,56 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
             println("User canceled / closed the dialog, result = $result")
 
         }
+    }
+
+    if (v == "randomFunc1") {
+        val a =  JTextField("0")
+        val b = JTextField("0")
+        val inputs = arrayOf<JComponent>(
+            JLabel("start date :"),
+            date, JLabel("start time :"), time, JLabel("sampling rate :"),
+            samplingrate_, JLabel("Кол-во элементов"), samplenumber_,
+            JLabel("--------------------------------------"),
+            JLabel("Начальная точка интервала"), a,
+            JLabel("Конечная точка интервала"), b
+        )
+        val result =
+            JOptionPane.showConfirmDialog(null, inputs, "Вводные параметры", JOptionPane.PLAIN_MESSAGE)
+        if (result == JOptionPane.OK_OPTION) {
+            sgn = randomFunc1( date.text,
+                time.text,
+                samplenumber_.text.toInt(),
+                samplingrate_.text,
+                a.text.toDouble(),
+                b.text.toDouble())
+        } else {
+            println("User canceled / closed the dialog, result = $result")
+        }
+    }
+    if (v == "randomFunc2") {
+        val a =  JTextField("0")
+        val d = JTextField("0")
+        val inputs = arrayOf<JComponent>(
+            JLabel("start date :"),
+            date, JLabel("start time :"), time, JLabel("sampling rate :"),
+            samplingrate_, JLabel("Кол-во элементов"), samplenumber_,
+            JLabel("--------------------------------------"),
+            JLabel("Среднее"), a,
+            JLabel("Дисперсия"), d
+        )
+        val result =
+            JOptionPane.showConfirmDialog(null, inputs, "Вводные параметры", JOptionPane.PLAIN_MESSAGE)
+        if (result == JOptionPane.OK_OPTION) {
+            sgn = randomFunc2( date.text,
+                time.text,
+                samplenumber_.text.toInt(),
+                samplingrate_.text,
+                a.text.toDouble(),
+                d.text.toDouble())
+        } else {
+            println("User canceled / closed the dialog, result = $result")
+        }
+
     }
         //date: String, time: String, samplenumber_: Int, samplingrate_: String, a: Double, f: Double, fo: Double, phi: Double, m: Double
     return sgn
@@ -430,7 +447,8 @@ fun v7(date: String, time: String, samplenumber_: Int, samplingrate_: String, T:
     return sgn
 }
 
-fun v8(date: String, time: String, samplenumber_: Int, samplingrate_: String, a: Double, f: Double, fo: Double, phi: Double): Signal {
+fun v8(date: String, time: String, samplenumber_: Int, samplingrate_: String,
+       a: Double, f: Double, fo: Double, phi: Double): Signal {
     val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
     var channelsnames = Array<String?>(1,{ i -> "balanceEnvelope"})
     var sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
@@ -444,7 +462,8 @@ fun v8(date: String, time: String, samplenumber_: Int, samplingrate_: String, a:
 }
 
 
-fun v9(date: String, time: String, samplenumber_: Int, samplingrate_: String, a: Double, f: Double, fo: Double, phi: Double, m: Double): Signal {
+fun v9(date: String, time: String, samplenumber_: Int, samplingrate_: String, a: Double,
+       f: Double, fo: Double, phi: Double, m: Double): Signal {
     val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
     var channelsnames = Array<String?>(1,{ i -> "tonEnvelope"})
     var sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
@@ -453,6 +472,34 @@ fun v9(date: String, time: String, samplenumber_: Int, samplingrate_: String, a:
         sgn.arraChannels[0][i] = (a*(1 + m*cos(2*PI*fo*x))*cos(2*PI*f*x + phi)).toFloat()
         x += 1/samplingrate_.toFloat()
         println(sgn.arraChannels[0][i])
+    }
+    return sgn
+}
+
+fun rand() : Double {
+    return Random(System.nanoTime()).nextDouble(Double.MAX_VALUE - 0.0 + 1.0)
+}
+
+fun frand() : Double {
+    return rand()/Double.MAX_VALUE
+}
+
+fun randomFunc1(date: String, time: String, samplenumber_: Int, samplingrate_: String, a: Double, b: Double) : Signal {
+    val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
+    var channelsnames = Array<String?>(1,{ i -> "tonEnvelope"})
+    var sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
+    for (x in 0 until samplenumber_){
+        sgn.arraChannels[0][x] = (a + (b - 1) * frand()).toFloat()
+    }
+    return sgn
+}
+
+fun randomFunc2(date: String, time: String, samplenumber_: Int, samplingrate_: String, a: Double, d: Double) : Signal {
+    val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
+    var channelsnames = Array<String?>(1,{ i -> "tonEnvelope"})
+    var sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
+    for (x in 0 until samplenumber_){
+        sgn.arraChannels[0][x] = (a + (d*d - 1) * frand()).toFloat()
     }
     return sgn
 }

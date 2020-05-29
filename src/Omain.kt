@@ -545,7 +545,7 @@ class TestMDI : JFrame() {
                 sgn = InitModel(v, GlobalSignal.starttime, GlobalSignal.startdate, GlobalSignal.samplingrate, GlobalSignal.samplesnumber.toString())
             }
             catch (e: UninitializedPropertyAccessException){
-                sgn = InitModel(v, "00:00:00", "01-01-2020", "100", "10000")
+                sgn = InitModel(v, "00:00:00", "01-01-2020", "1", "10000")
 
             }
 
@@ -616,15 +616,25 @@ class TestMDI : JFrame() {
         val v7 = JMenuItem("7)“экспоненциальная огибающая ”")
         val v8 = JMenuItem("8)балансная огибающая")
         val v9 = JMenuItem("9)тональная огибающая")
+
+        val randomFunc1 = JMenuItem("1)сигнал белого шума, равномерно распределенного в интервале [a,b]")
+        val randomFunc2 = JMenuItem("2)сигнал белого шума, распределенного по нормальному закону с заданными средним и дисперсией")
+        val randomFunc3 = JMenuItem("3)случайный сигнал авторегрессии-скользящего среднего порядка (p,q) – АРСС (p,q)")
+
         discretMenu.add(v1)
         discretMenu.add(v2)
         discretMenu.add(v3)
         discretMenu.add(v4)
         discretMenu.add(v5)
         discretMenu.add(v6)
-        randomMenu.add(v7)
-        randomMenu.add(v8)
-        randomMenu.add(v9)
+        discretMenu.add(v7)
+        discretMenu.add(v8)
+        discretMenu.add(v9)
+
+        randomMenu.add(randomFunc1)
+        randomMenu.add(randomFunc2)
+        randomMenu.add(randomFunc3)
+
         v1.addActionListener{
             CreateModelWindow("v1")
         }
@@ -652,9 +662,18 @@ class TestMDI : JFrame() {
         v9.addActionListener{
             CreateModelWindow("v9")
         }
+        randomFunc1.addActionListener{
+            CreateModelWindow("randomFunc1")
+        }
+        randomFunc2.addActionListener{
+            CreateModelWindow("randomFunc2")
+        }
+        randomFunc3.addActionListener{
+            CreateModelWindow("randomFunc3")
+        }
+
         modelMenu.add(discretMenu)
         modelMenu.add(randomMenu)
-
 
         val newFrame = JMenuItem("new MDI")
         val loadSignal = JMenuItem("Загрузить сигнал")
@@ -671,7 +690,7 @@ class TestMDI : JFrame() {
             contents.add(JTextField("Маша Ярушина"))
             contents.add(JTextField("Влад Роговой"))
             contents.add(JTextField("Никита Баранов"))
-            contents.add(JTextField("Тина Савченко"))
+            contents.add(JTextField("Валентина Савченко"))
 
             // Размещаем панель в контейнере
             infAboutInternalFrame.setContentPane(contents)
