@@ -494,12 +494,56 @@ fun randomFunc1(date: String, time: String, samplenumber_: Int, samplingrate_: S
     return sgn
 }
 
+fun normRand() : Double {
+    var sum = 0.0
+    for (i in 0..11) {
+        sum += frand()
+    }
+    return sum - 6.0
+}
+
+
+
 fun randomFunc2(date: String, time: String, samplenumber_: Int, samplingrate_: String, a: Double, d: Double) : Signal {
     val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
     var channelsnames = Array<String?>(1,{ i -> "tonEnvelope"})
     var sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
     for (x in 0 until samplenumber_){
-        sgn.arraChannels[0][x] = (a + (d*d - 1) * frand()).toFloat()
+        sgn.arraChannels[0][x] = (sqrt(a) + d * normRand()).toFloat()
     }
     return sgn
 }
+
+//fun sum(q: Int, b: Array<Double>, d: Double) : Double {
+//    var res : Double = 0.0
+//    for (i in 1..q) {
+//        res += b[i - 1] * xfun(d)
+//    }
+//    return res
+//}
+//
+//
+//fun sum2(p: Int, a: Array<Double>, q: Int, b: Array<Double>, d: Double) : Double {
+//    var res = 0.0
+//    for (i in 1..p) {
+//        res += a[p - 1] * yfun(q, b, d)
+//    }
+//}
+//
+//fun xfun(d : Double) : Double{
+//    return  (d * normRand())
+//}
+//
+//fun yfun(q: Int, b: Array<Double>, d: Double) : Double{
+//    return xfun(d) + sum(q, b, d)
+//}
+//
+//fun randomFunc3(date: String, time: String, samplenumber_: Int, samplingrate_: String, d: Double, p: Int, q: Int, a: Array<Double>, b: Array<Double>) : Signal {
+//    val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
+//    val channelsnames = Array<String?>(1,{ i -> "tonEnvelope"})
+//    val sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
+//    for (n in 0 until samplenumber_) {
+//        sgn.arraChannels[0][x] = yfun().toFloat()
+//    }
+//    return sgn
+//}
