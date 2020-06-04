@@ -489,7 +489,7 @@ fun randomFunc1(date: String, time: String, samplenumber_: Int, samplingrate_: S
     var channelsnames = Array<String?>(1,{ i -> "tonEnvelope"})
     var sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
     for (x in 0 until samplenumber_){
-        sgn.arraChannels[0][x] = (a + (b - 1) * frand()).toFloat()
+        sgn.arraChannels[0][x] = (a + (b - a) * frand()).toFloat()
     }
     return sgn
 }
