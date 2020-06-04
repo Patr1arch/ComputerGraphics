@@ -13,6 +13,42 @@ fun stringsToDoubles(a: List<String>) : List<Float>{
     return tmp
 }
 
+
+fun InitSuperPosition(v: String, oldStartTime: String, oldStartDate: String, oldSamplingRate: String, oldSampleNumber: String, signals: Array<Array<Float>>) : Signal {
+    lateinit var sgn: Signal
+    val time = JTextField(oldStartTime)
+    val date = JTextField(oldStartDate)
+    var samplingrate_ = JTextField(oldSamplingRate)
+    var samplenumber_ = JTextField(oldSampleNumber)
+
+    if (v == "superPosition1") {
+        val a = JTextField("0")
+        val inputs = arrayOf<JComponent>(
+            JLabel("start date :"),
+            date, JLabel("start time :"), time, JLabel("sampling rate :"),
+            samplingrate_, JLabel("Кол-во элементов"), samplenumber_,
+            JLabel("--------------------------------------"),
+            JLabel("Произвольные коэффициенты (максимально " + signals.size + 1 +  ")"), a
+        )
+        val tmpa_double = stringsToDoubles(a.text.split(" "))
+
+        val result =
+            JOptionPane.showConfirmDialog(null, inputs, "Вводные параметры", JOptionPane.PLAIN_MESSAGE)
+        if (result == JOptionPane.OK_OPTION) {
+            sgn = superPosition1(date.text,
+                time.text,
+                samplenumber_.text.toInt(),
+                samplingrate_.text, stringsToDoubles(a.text.split(" ")), signals)
+        } else {
+            println("User canceled / closed the dialog, result = $result")
+        }
+    }
+    if (v == "superPosition2") {
+
+    }
+    return sgn
+}
+
 fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSamplingRate: String, oldSampleNumber: String): Signal {
 
     lateinit var sgn: Signal
@@ -598,4 +634,18 @@ fun randomFunc3(date: String, time: String, samplenumber_: Int, samplingrate_: S
         println("x:" + n + " y:" + sgn.arraChannels[0][n])
     }
     return sgn
+}
+
+fun superPosition1(date: String, time: String, samplenumber_: Int, samplingrate_: String, a: List<Float>, signals: Array<Array<Float>>) : Signal{
+    val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
+    val channelsnames = Array<String?>(1,{ i -> "tonEnvelope"})
+    val sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
+    for (n in 0 until samplenumber_) {
+        for (i in signals.indices) {
+            sgn.arraChannels[0][n] += signals[i][n] * a[i + 1]
+        }
+        sgn.arraChannels[0][n] += a[0]
+    }
+    return sgn
+
 }

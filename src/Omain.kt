@@ -497,6 +497,20 @@ class TestMDI : JFrame() {
                     }
                     add(anItem)
                 }
+
+
+//                var removeItem: JMenuItem
+//                init {
+//                    anItem = JMenuItem("Удалить канал")
+//                    anItem.addActionListener {
+//
+//                    }
+//                    add(removeItem)
+//
+//
+//                }
+
+
             }
             class PopClickListener(channel_: SuperChannel) : MouseAdapter() {
                 var channel: SuperChannel = channel_
@@ -539,15 +553,22 @@ class TestMDI : JFrame() {
 //            modelWind = ItemWindow("Модели", true, true, true, false)
 //            modelWind.setBounds(25, 25, 700, 450)
 //            modelWind.addInternalFrameListener(MDIInternalFrameListener())
-//            modelWind.addComponentListener(MDIResizeListener())
+//            modelWind.addComponentListener(MDIResizeListener()
             lateinit var sgn: Signal
-            try {
-                sgn = InitModel(v, GlobalSignal.starttime, GlobalSignal.startdate, GlobalSignal.samplingrate, GlobalSignal.samplesnumber.toString())
-            }
-            catch (e: UninitializedPropertyAccessException){
-                sgn = InitModel(v, "00:00:00", "01-01-2020", "1", "10000")
 
+            if (v == "superPosition1" || v == "superPosition2") {
+                sgn = InitSuperPosition(v, GlobalSignal.starttime, GlobalSignal.startdate, GlobalSignal.samplingrate, GlobalSignal.samplesnumber.toString(), GlobalSignal.arraChannels)
             }
+            else {
+                try {
+                    sgn = InitModel(v, GlobalSignal.starttime, GlobalSignal.startdate, GlobalSignal.samplingrate, GlobalSignal.samplesnumber.toString())
+                }
+                catch (e: UninitializedPropertyAccessException){
+                    sgn = InitModel(v, "00:00:00", "01-01-2020", "1", "10000")
+
+                }
+            }
+
 
             try {
                 if ((sgn.startdate == GlobalSignal.startdate) && (sgn.starttime == GlobalSignal.starttime) && (sgn.samplesnumber == GlobalSignal.samplesnumber) && (sgn.samplingrate == GlobalSignal.samplingrate)) {
@@ -607,6 +628,7 @@ class TestMDI : JFrame() {
 
         val discretMenu = JMenu("Дискретные")
         val randomMenu = JMenu("Случайные")
+        val superPositionMenu = JMenu("Суперпозиция")
         val v1 = JMenuItem("1)задержанный единичный импульс")
         val v2 = JMenuItem("2)задержанный единичный скачок ")
         val v3 = JMenuItem("3)дискретизированная убывающая экспонента")
@@ -616,7 +638,8 @@ class TestMDI : JFrame() {
         val v7 = JMenuItem("7)“экспоненциальная огибающая ”")
         val v8 = JMenuItem("8)балансная огибающая")
         val v9 = JMenuItem("9)тональная огибающая")
-
+        val superPosition1 = JMenuItem("Линейная суперпозиция")
+        val superPosition2 = JMenuItem("Мультипликативная суперпозиция")
         val randomFunc1 = JMenuItem("1)сигнал белого шума, равномерно распределенного в интервале [a,b]")
         val randomFunc2 = JMenuItem("2)сигнал белого шума, распределенного по нормальному закону с заданными средним и дисперсией")
         val randomFunc3 = JMenuItem("3)случайный сигнал авторегрессии-скользящего среднего порядка (p,q) – АРСС (p,q)")
@@ -634,6 +657,9 @@ class TestMDI : JFrame() {
         randomMenu.add(randomFunc1)
         randomMenu.add(randomFunc2)
         randomMenu.add(randomFunc3)
+
+        superPositionMenu.add(superPosition1)
+        superPositionMenu.add(superPosition2)
 
         v1.addActionListener{
             CreateModelWindow("v1")
@@ -671,9 +697,16 @@ class TestMDI : JFrame() {
         randomFunc3.addActionListener{
             CreateModelWindow("randomFunc3")
         }
+        superPosition1.addActionListener{
+            CreateModelWindow("superPosition1")
+        }
+        superPosition2.addActionListener{
+            CreateModelWindow("superPosition2")
+        }
 
         modelMenu.add(discretMenu)
         modelMenu.add(randomMenu)
+        modelMenu.add(superPositionMenu)
 
         val newFrame = JMenuItem("new MDI")
         val loadSignal = JMenuItem("Загрузить сигнал")
