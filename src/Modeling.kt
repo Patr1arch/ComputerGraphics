@@ -4,6 +4,15 @@ import java.util.Date
 import kotlin.math.exp
 import kotlin.random.Random
 
+
+fun stringsToDoubles(a: List<String>) : List<Float>{
+    val tmp = ArrayList<Float>()
+    for (s in a) {
+        tmp.add(s.toFloat())
+    }
+    return tmp
+}
+
 fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSamplingRate: String, oldSampleNumber: String): Signal {
 
     lateinit var sgn: Signal
@@ -342,6 +351,36 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
         }
 
     }
+    if (v == "randomFunc3") {
+        val d = JTextField("4")
+        val p = JTextField("4")
+        val q = JTextField("3")
+        val a = JTextField("1 2 3 4")
+        val b = JTextField("5 6 7")
+        val inputs = arrayOf<JComponent>(
+            JLabel("start date :"),
+            date, JLabel("start time :"), time, JLabel("sampling rate :"),
+            samplingrate_, JLabel("Кол-во элементов"), samplenumber_,
+            JLabel("--------------------------------------"),
+            JLabel("Дисперсия"), d,
+            JLabel("p"), p, JLabel("q"), q,
+            JLabel("a"), a, JLabel("b"), b
+        )
+        val tmpa_double = stringsToDoubles(a.text.split(" "))
+
+
+
+        val result =
+            JOptionPane.showConfirmDialog(null, inputs, "Вводные параметры", JOptionPane.PLAIN_MESSAGE)
+        if (result == JOptionPane.OK_OPTION) {
+            sgn = randomFunc3(date.text,
+            time.text,
+            samplenumber_.text.toInt(),
+            samplingrate_.text, d.text.toDouble(), p.text.toInt(), q.text.toInt(), stringsToDoubles(a.text.split(" ")), stringsToDoubles(b.text.split(" ")))
+        } else {
+            println("User canceled / closed the dialog, result = $result")
+        }
+    }
         //date: String, time: String, samplenumber_: Int, samplingrate_: String, a: Double, f: Double, fo: Double, phi: Double, m: Double
     return sgn
 
@@ -496,9 +535,11 @@ fun randomFunc1(date: String, time: String, samplenumber_: Int, samplingrate_: S
 
 fun normRand() : Double {
     var sum = 0.0
+    println("frand = " + frand())
     for (i in 0..11) {
         sum += frand()
     }
+    println(sum - 6.0)
     return sum - 6.0
 }
 
@@ -509,41 +550,52 @@ fun randomFunc2(date: String, time: String, samplenumber_: Int, samplingrate_: S
     var channelsnames = Array<String?>(1,{ i -> "tonEnvelope"})
     var sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
     for (x in 0 until samplenumber_){
-        sgn.arraChannels[0][x] = (sqrt(a) + d * normRand()).toFloat()
+        sgn.arraChannels[0][x] = (a + sqrt(d) * normRand()).toFloat()
+
     }
     return sgn
 }
 
-//fun sum(q: Int, b: Array<Double>, d: Double) : Double {
-//    var res : Double = 0.0
-//    for (i in 1..q) {
-//        res += b[i - 1] * xfun(d)
-//    }
-//    return res
-//}
-//
-//
-//fun sum2(p: Int, a: Array<Double>, q: Int, b: Array<Double>, d: Double) : Double {
-//    var res = 0.0
-//    for (i in 1..p) {
-//        res += a[p - 1] * yfun(q, b, d)
-//    }
-//}
-//
-//fun xfun(d : Double) : Double{
-//    return  (d * normRand())
-//}
-//
-//fun yfun(q: Int, b: Array<Double>, d: Double) : Double{
-//    return xfun(d) + sum(q, b, d)
-//}
-//
-//fun randomFunc3(date: String, time: String, samplenumber_: Int, samplingrate_: String, d: Double, p: Int, q: Int, a: Array<Double>, b: Array<Double>) : Signal {
-//    val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
-//    val channelsnames = Array<String?>(1,{ i -> "tonEnvelope"})
-//    val sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
-//    for (n in 0 until samplenumber_) {
-//        sgn.arraChannels[0][x] = yfun().toFloat()
-//    }
-//    return sgn
-//}
+fun randomFunc3(date: String, time: String, samplenumber_: Int, samplingrate_: String, d: Double, p: Int, q: Int, a: List<Float>, b: List<Float>) : Signal {
+    val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
+    val channelsnames = Array<String?>(1,{ i -> "tonEnvelope"})
+    val sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
+    val randList = ArrayList<Double>()
+    var ycount = 0
+    for (n in 0 until samplenumber_) {
+        val x : Double = (d * normRand() * sqrt(d))
+        randList.add(x)
+        println("x = $x")
+
+        var res = 0.0
+        for (i in 1..q) {
+            if (n - i >= randList.size || n - i < 0)
+                break
+            if (n == 203) {
+                print("aaa")
+            }
+            res += b[i - 1] * randList[n - i]
+            println("res1 = $res")
+        }
+
+        for (i in 1..p) {
+            if (n - i >= ycount || n - i < 0)
+                break
+            if (n == 202 || n==203) {
+                println(sgn.arraChannels[0][n - i])
+                println(a[i - 1])
+            }
+            res -= a[i - 1] * sgn.arraChannels[0][n - i]
+            println("a() =$a, res2 = $res, y(n-$i) = " + sgn.arraChannels[0][n - i])
+        }
+
+        if (n == 202) {
+            println(res)
+            println(x)
+        }
+        sgn.arraChannels[0][n] = x.toFloat() + res.toFloat()
+        ycount++
+        println("x:" + n + " y:" + sgn.arraChannels[0][n])
+    }
+    return sgn
+}
