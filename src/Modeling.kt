@@ -640,6 +640,11 @@ fun superPosition1(date: String, time: String, samplenumber_: Int, samplingrate_
     val sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
     for (n in 0 until samplenumber_) {
         for (i in signals.indices) {
+            if (n >= signals[i].size)
+            {
+                sgn.arraChannels[0][n] += 0f
+                continue
+            }
             sgn.arraChannels[0][n] += signals[i][n] * a[i + 1]
         }
         sgn.arraChannels[0][n] += a[0]
@@ -655,6 +660,11 @@ fun superPosition2(date: String, time: String, samplenumber_: Int, samplingrate_
     for (n in 0 until samplenumber_) {
         sgn.arraChannels[0][n] = 1f
         for (i in signals.indices) {
+            if (n >= signals[i].size)
+            {
+                sgn.arraChannels[0][n] *= 0f
+                continue
+            }
             sgn.arraChannels[0][n] *= signals[i][n]
         }
         sgn.arraChannels[0][n] *= a
