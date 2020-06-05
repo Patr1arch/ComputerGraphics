@@ -8,6 +8,8 @@ import kotlin.random.Random
 fun stringsToDoubles(a: List<String>) : List<Float>{
     val tmp = ArrayList<Float>()
     for (s in a) {
+        if (s == "")
+            break
         tmp.add(s.toFloat())
     }
     return tmp
@@ -44,7 +46,26 @@ fun InitSuperPosition(v: String, oldStartTime: String, oldStartDate: String, old
         }
     }
     if (v == "superPosition2") {
+        val a = JTextField("0")
+        val inputs = arrayOf<JComponent>(
+            JLabel("start date :"),
+            date, JLabel("start time :"), time, JLabel("sampling rate :"),
+            samplingrate_, JLabel("Кол-во элементов"), samplenumber_,
+            JLabel("--------------------------------------"),
+            JLabel("Произвольный коэффициент"), a
+        )
+        val tmpa_double = stringsToDoubles(a.text.split(" "))
 
+        val result =
+            JOptionPane.showConfirmDialog(null, inputs, "Вводные параметры", JOptionPane.PLAIN_MESSAGE)
+        if (result == JOptionPane.OK_OPTION) {
+            sgn = superPosition2(date.text,
+                time.text,
+                samplenumber_.text.toInt(),
+                samplingrate_.text, a.text.toFloat(), signals)
+        } else {
+            println("User canceled / closed the dialog, result = $result")
+        }
     }
     return sgn
 }
@@ -389,8 +410,8 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
     }
     if (v == "randomFunc3") {
         val d = JTextField("4")
-        val p = JTextField("6")
-        val q = JTextField("3")
+//        val p = JTextField("6")
+//        val q = JTextField("3")
         val a = JTextField("-4.167 7.940 -9.397 7.515 -3.752 0.862")
         val b = JTextField("-2.28 1.77 -0.47")
         val inputs = arrayOf<JComponent>(
@@ -399,7 +420,6 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
             samplingrate_, JLabel("Кол-во элементов"), samplenumber_,
             JLabel("--------------------------------------"),
             JLabel("Дисперсия"), d,
-            JLabel("p"), p, JLabel("q"), q,
             JLabel("a"), a, JLabel("b"), b
         )
         val tmpa_double = stringsToDoubles(a.text.split(" "))
@@ -412,7 +432,7 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
             sgn = randomFunc3(date.text,
             time.text,
             samplenumber_.text.toInt(),
-            samplingrate_.text, d.text.toFloat(), p.text.toInt(), q.text.toInt(), stringsToDoubles(a.text.split(" ")), stringsToDoubles(b.text.split(" ")))
+            samplingrate_.text, d.text.toFloat(), stringsToDoubles(a.text.split(" ")), stringsToDoubles(b.text.split(" ")))
         } else {
             println("User canceled / closed the dialog, result = $result")
         }
@@ -552,7 +572,9 @@ fun v9(date: String, time: String, samplenumber_: Int, samplingrate_: String, a:
 }
 
 fun rand() : Float {
-    return Random(System.nanoTime()).nextFloat()
+    var a = Random(System.nanoTime()).nextFloat()
+    println(a)
+    return a
    // return (0..1).random()
 }
 
@@ -590,7 +612,7 @@ fun randomFunc2(date: String, time: String, samplenumber_: Int, samplingrate_: S
     return sgn
 }
 
-fun randomFunc3(date: String, time: String, samplenumber_: Int, samplingrate_: String, d: Float, p: Int, q: Int, a: List<Float>, b: List<Float>) : Signal {
+fun randomFunc3(date: String, time: String, samplenumber_: Int, samplingrate_: String, d: Float, a: List<Float>, b: List<Float>) : Signal {
     val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
     val channelsnames = Array<String?>(1,{ i -> "tonEnvelope"})
     val sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
@@ -602,7 +624,7 @@ fun randomFunc3(date: String, time: String, samplenumber_: Int, samplingrate_: S
         println("x = $x")
 
         var res = 0f
-        for (i in 1..q) {
+        for (i in 1..b.size - 1) {
             if (n - i >= randList.size || n - i < 0)
                 break
             if (n == 203) {
@@ -612,7 +634,7 @@ fun randomFunc3(date: String, time: String, samplenumber_: Int, samplingrate_: S
             println("res1 = $res")
         }
 
-        for (i in 1..p) {
+        for (i in 1..a.size - 1) {
             if (n - i >= ycount || n - i < 0)
                 break
             if (n == 202 || n==203) {
@@ -643,6 +665,21 @@ fun superPosition1(date: String, time: String, samplenumber_: Int, samplingrate_
             sgn.arraChannels[0][n] += signals[i][n] * a[i + 1]
         }
         sgn.arraChannels[0][n] += a[0]
+    }
+    return sgn
+}
+
+fun superPosition2(date: String, time: String, samplenumber_: Int, samplingrate_: String, a: Float, signals: Array<Array<Float>>) : Signal{
+    val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
+    val channelsnames = Array<String?>(1,{ i -> "tonEnvelope"})
+    val sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
+
+    for (n in 0 until samplenumber_) {
+        sgn.arraChannels[0][n] = 1f
+        for (i in signals.indices) {
+            sgn.arraChannels[0][n] *= signals[i][n]
+        }
+        sgn.arraChannels[0][n] *= a
     }
     return sgn
 
