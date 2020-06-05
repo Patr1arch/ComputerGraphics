@@ -30,7 +30,7 @@ fun InitSuperPosition(v: String, oldStartTime: String, oldStartDate: String, old
             date, JLabel("start time :"), time, JLabel("sampling rate :"),
             samplingrate_, JLabel("Кол-во элементов"), samplenumber_,
             JLabel("--------------------------------------"),
-            JLabel("Произвольные коэффициенты (максимально " + signals.size + 1 +  ")"), a
+            JLabel("Произвольные коэффициенты (максимально " + (signals.size + 1) +  ")"), a
         )
         val tmpa_double = stringsToDoubles(a.text.split(" "))
 
@@ -280,11 +280,9 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
     }
 
     if (v == "v8") {
-      //  var L = JTextField("50") //период решетки
         var a = JTextField("1") //amplitude
-        var t = JTextField("1") //width of envelope
-        var f = JTextField("1") //frequency of wave
-        var fo = JTextField("0.5") //envelope frequency
+        var f = JTextField("0.01") //frequency несущей
+        var fo = JTextField("0.0002") //частота огибающей
         var phi = JTextField("0") //phase
         val inputs = arrayOf<JComponent>(
             JLabel("start date :"),
@@ -292,7 +290,7 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
             JLabel("Кол-во элементов"), samplenumber_,
             JLabel("--------------------------------------"),
             JLabel("амплитуда"), a,
-            JLabel("частота огибающей"), fo, JLabel("Частота несущей"), f, JLabel("Фаза"), phi
+            JLabel("частота огибающей (макс. 0.5 частоты несущей)"), fo, JLabel("Частота несущей (макс. 0.5 частоты дискретизации)"), f, JLabel("Фаза"), phi
         )
         val result =
             JOptionPane.showConfirmDialog(null, inputs, "Вводные параметры", JOptionPane.PLAIN_MESSAGE)
@@ -320,18 +318,18 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
 
     if (v == "v9") {
         var a = JTextField("1") //amplitude
-        var f = JTextField("1") //frequency of wave
-        var fo = JTextField("0.5") //envelope frequency
+        var f = JTextField("0.03") //frequency несущей
+        var fo = JTextField("0.001") //частота огибающей
         var phi = JTextField("0") //phase
-        var m = JTextField("0.5") //depth
+        var m = JTextField("0.2") //depth
         val inputs = arrayOf<JComponent>(
             JLabel("start date :"),
             date, JLabel("start time :"), time, JLabel("sampling rate :"),
             samplingrate_, JLabel("Кол-во элементов"), samplenumber_,
             JLabel("--------------------------------------"),
            JLabel("амплитуда"), a,
-            JLabel("частота огибающей"), fo,
-            JLabel("Частота несущей"), f,
+            JLabel("частота огибающей (макс. 0.5 частоты несущей)"), fo,
+            JLabel("Частота несущей (макс. 0.5 частоты дискретизации)"), f,
             JLabel("Фаза"), phi,
             JLabel("Индекс глубины модуляции (в интегрвале от 0 до 1)"), m
         )
@@ -348,8 +346,8 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
                 samplenumber_.text.toInt(),
                 samplingrate_.text,
                 a.text.toDouble(),
-                f.text.toDouble(),
                 fo.text.toDouble(),
+                f.text.toDouble(),
                 phi.text.toDouble(),
                 m.text.toDouble()
             )
@@ -422,10 +420,6 @@ fun InitModel(v: String, oldStartTime: String, oldStartDate: String, oldSampling
             JLabel("Дисперсия"), d,
             JLabel("a"), a, JLabel("b"), b
         )
-        val tmpa_double = stringsToDoubles(a.text.split(" "))
-
-
-
         val result =
             JOptionPane.showConfirmDialog(null, inputs, "Вводные параметры", JOptionPane.PLAIN_MESSAGE)
         if (result == JOptionPane.OK_OPTION) {
@@ -549,7 +543,7 @@ fun v8(date: String, time: String, samplenumber_: Int, samplingrate_: String,
     var sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
     var x = 0.0;
     for (i in 0..samplenumber_-1){
-        sgn.arraChannels[0][i] = (a*cos(2*PI*fo*x + phi) *cos(2*PI*f*x)).toFloat()
+        sgn.arraChannels[0][i] = (a*cos(2*PI*fo*x) *cos(2*PI*f*x + phi)).toFloat()
         x += 1/samplingrate_.toFloat()
         println(sgn.arraChannels[0][i])
     }
@@ -558,7 +552,7 @@ fun v8(date: String, time: String, samplenumber_: Int, samplingrate_: String,
 
 
 fun v9(date: String, time: String, samplenumber_: Int, samplingrate_: String, a: Double,
-       f: Double, fo: Double, phi: Double, m: Double): Signal {
+       fo: Double, f: Double, phi: Double, m: Double): Signal {
     val arraChannels: Array<Array<Float>> = Array(1, { Array(samplenumber_, {0f}) })
     var channelsnames = Array<String?>(1,{ i -> "tonEnvelope"})
     var sgn: Signal = Signal(1, samplenumber_, samplingrate_, date, time, arraChannels, "modeling", channelsnames)
@@ -573,7 +567,6 @@ fun v9(date: String, time: String, samplenumber_: Int, samplingrate_: String, a:
 
 fun rand() : Float {
     var a = Random(System.nanoTime()).nextFloat()
-    println(a)
     return a
    // return (0..1).random()
 }
@@ -595,7 +588,6 @@ fun normRand() : Float {
     for (i in 0..11) {
         sum += rand()
     }
-    println(sum - 6f)
     return sum - 6f
 }
 
@@ -621,34 +613,20 @@ fun randomFunc3(date: String, time: String, samplenumber_: Int, samplingrate_: S
     for (n in 0 until samplenumber_) {
         val x : Float = (normRand() * kotlin.math.sqrt(d))
         randList.add(x)
-        println("x = $x")
 
         var res = 0f
         for (i in 1..b.size - 1) {
             if (n - i >= randList.size || n - i < 0)
                 break
-            if (n == 203) {
-                print("aaa")
-            }
             res += b[i - 1] * randList[n - i]
-            println("res1 = $res")
         }
 
         for (i in 1..a.size - 1) {
             if (n - i >= ycount || n - i < 0)
                 break
-            if (n == 202 || n==203) {
-                println(sgn.arraChannels[0][n - i])
-                println(a[i - 1])
-            }
             res -= a[i - 1] * sgn.arraChannels[0][n - i]
-            println("a() =$a, res2 = $res, y(n-$i) = " + sgn.arraChannels[0][n - i])
         }
 
-        if (n == 202) {
-            println(res)
-            println(x)
-        }
         sgn.arraChannels[0][n] = x + res
         ycount++
         println("x:" + n + " y:" + sgn.arraChannels[0][n])
