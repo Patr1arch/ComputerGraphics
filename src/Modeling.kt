@@ -566,7 +566,7 @@ fun v9(date: String, time: String, samplenumber_: Int, samplingrate_: String, a:
 }
 
 fun rand() : Float {
-    var a = Random(System.nanoTime()).nextFloat()
+    var a = Random.nextFloat()
     return a
    // return (0..1).random()
 }
@@ -615,14 +615,14 @@ fun randomFunc3(date: String, time: String, samplenumber_: Int, samplingrate_: S
         randList.add(x)
 
         var res = 0f
-        for (i in 1..b.size - 1) {
-            if (n - i >= randList.size || n - i < 0)
+        for (i in 1..b.size) {
+            if (n - i < 0)
                 break
             res += b[i - 1] * randList[n - i]
         }
 
-        for (i in 1..a.size - 1) {
-            if (n - i >= ycount || n - i < 0)
+        for (i in 1..a.size) {
+            if ( n - i < 0)
                 break
             res -= a[i - 1] * sgn.arraChannels[0][n - i]
         }
